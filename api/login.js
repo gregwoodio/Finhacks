@@ -27,7 +27,7 @@ module.exports = function(app, models) {
 
           // wrong password
           if (!bcrypt.compareSync(req.body.password, profile.dataValues.password)) {
-            res.json({
+            res.status(401).json({
               message: 'Incorrect username or password.'
             });
             return;
