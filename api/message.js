@@ -10,7 +10,8 @@ module.exports = function(app, models) {
     var response = undefined;
 
     request({
-      url: 'http://159.203.8.134:3000/login',
+      // url: 'http://159.203.8.134:3000/login',
+      url: 'https://fcm.googleapis.com/fcm/send',
       method: 'post',
       headers: {
         Authorization: 'key=AIzaSyAokS3NEjFMIWTtYXUZWMjmGog0vmLFulE',
@@ -21,7 +22,7 @@ module.exports = function(app, models) {
       //   password:'password'
       // }
       json: {
-        { "collapse_key": "score_update",
+        data: { "collapse_key": "score_update",
           "time_to_live": 108,
           "data": {
             "score": "4x8",

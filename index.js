@@ -24,6 +24,16 @@ require('./api/uploads')(app, models);
 require('./api/login')(app, models);
 require('./api/message')(app, models);
 
+//if it's not an API route, go to the front end login
+app.use(express.static(__dirname + '/frontend'));
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/frontend/altpay.html');
+});
+
+app.get('/*', function(req, res) {
+  res.sendFile(__dirname + '/frontend/altpay.html');
+});
+
 //secret for signing tokens
 app.set('secret', config.secret);
 
