@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 //the collection definition
 var transactionSchema = new Schema({
-  sender_id      : Number,
-  receiver_id    : Number,
+  sender_id      : String,
+  receiver       : Object,
   transaction_amt: Number,
   payment_type   : String,
   timestamp      : Date,

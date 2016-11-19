@@ -14,7 +14,7 @@ var sequelize = new Sequelize('altpay', 'root', '1234', {
 
 var Profile = sequelize.define('profile', {
   id: {
-    type: Sequelize.STRING, 
+    type: Sequelize.STRING,
     primaryKey: true
   },
   email: {
@@ -82,5 +82,8 @@ ProfileDevice.belongsTo(Device, {foreignKey: 'deviceid'});
 
 module.exports = {
   Profile: Profile,
-  Device: Device
+  Device: Device,
+  ProfileDevice: ProfileDevice,
+  Transaction: require("./mongodb_models/transaction")
+
 };
