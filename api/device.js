@@ -1,6 +1,7 @@
 // device.js
 
 var uuid = require('uuid');
+var mw = require('../middleware');
 
 module.exports = function(app, models) {
 
@@ -22,20 +23,20 @@ module.exports = function(app, models) {
 
   });
 
-  app.get('/device', function(req, res) {
+  // app.get('/device', function(req, res) {
 
-    models.Device.findAll()
-    .then(function(devices) {
-      res.json(devices);
-    })
-    .catch(function(err) {
-      res.json({
-        message: err.message
-      });
-    });
-  });
+  //   models.Device.findAll()
+  //   .then(function(devices) {
+  //     res.json(devices);
+  //   })
+  //   .catch(function(err) {
+  //     res.json({
+  //       message: err.message
+  //     });
+  //   });
+  // });
 
-  app.post('/device', function(req, res) {
+  app.post('/device', mw.verifyToken, function(req, res) {
 
     if (req.body.devicetype != undefined && req.body.devicename != undefined) {
 
@@ -46,6 +47,11 @@ module.exports = function(app, models) {
       })
       .save()
       .then(function(device) {
+
+        models.ProfileDevice.build({
+          profileid: 
+        }
+
         res.json({
           message: 'Device saved.'
         });
