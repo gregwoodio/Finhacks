@@ -1,6 +1,7 @@
 // device.js
 
 var uuid = require('uuid');
+var mw = require('../middleware');
 
 module.exports = function(app, models) {
 
@@ -61,6 +62,16 @@ module.exports = function(app, models) {
         message: 'Missing parameters for device creation.'
       });
     }
+  });
+
+  app.post("/device/updatefdi", mw.verifyToken, function (req, res) {
+    models.Device.update({
+      fdi: req.body.fdi
+    }, {
+      where: {
+        deviceid: req.body.deviceId
+      }
+    }).then(function (device) {});
   });
 
 }
