@@ -69,4 +69,14 @@ module.exports = function(app, models) {
     }
   });
 
+  app.post("/device/updatefdi", mw.verifyToken, function (req, res) {
+    models.Device.update({
+      fdi: req.body.fdi
+    }, {
+      where: {
+        deviceid: req.body.deviceId
+      }
+    }).then(function (device) {});
+  });
+
 }
