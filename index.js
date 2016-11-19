@@ -18,9 +18,10 @@ mongoose.connect('mongodb://localhost/finhacks2016');
 
 var models = require('./models.js');
 
-require('./api/profile.js')(app, models);
-require('./api/device.js')(app, models);
-require('./api/uploads.js')(app, models);
+require('./api/profile')(app, models);
+require('./api/device')(app, models);
+require('./api/uploads')(app, models);
+require('./api/login')(app, models);
 
 //secret for signing tokens
 app.set('secret', config.secret);

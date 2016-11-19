@@ -69,14 +69,9 @@ module.exports = function(app, models) {
           .save()
           .then(function(profile) {
 
-            //successful login, make a token
-            var token = jwt.sign(profile, app.get('secret'), {
-              expiresIn: '1440m' // a day
-            });
-
+            //successful login
             res.json({
               message: 'Profile saved.',
-              token: token
             });
           })
           .catch(function(err) {
