@@ -2,7 +2,7 @@ var express    = require("express");
 var app        = express();
 var mongoose   = require("mongoose");
 var bodyParser = require('body-parser');
-var port       = 3000;
+var PORT       = process.env.port || 3000;
 
 //setup body parser for when post requests are sent
 app.use(bodyParser.json()); // for parsing application/json
@@ -17,5 +17,9 @@ var models = require('./models.js');
 require('./api/profile.js')(app, models);
 require('./api/device.js')(app, models);
 
-app.listen(port);
-console.log("Get your ass to port " + port);
+// Configuration
+app.use(express.static(__dirname + '/uploads'));
+
+app.listen(PORT);
+
+console.log("Server started and listening on port " + PORT);
