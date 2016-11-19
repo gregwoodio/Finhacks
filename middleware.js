@@ -1,7 +1,7 @@
 // middleware.js
 
-app = require('../index');
-config = require('../config/config');
+app = require('./index');
+config = require('./config');
 
 function verifyToken(req, res, next) {
   var token = req.headers['x-access-token'];
