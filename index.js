@@ -22,7 +22,7 @@ require('./api/profile')(app, models);
 require('./api/device')(app, models);
 require('./api/uploads')(app, models);
 require('./api/login')(app, models);
-// require('./api/message')(app, models);
+require('./api/message')(app, models);
 
 //secret for signing tokens
 app.set('secret', config.secret);
