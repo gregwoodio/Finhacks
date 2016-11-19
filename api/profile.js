@@ -1,7 +1,7 @@
 // profile.js
 
 var uuid = require('uuid');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 var mw = require('../middleware');
 
@@ -36,11 +36,11 @@ module.exports = function(app, models) {
     // console.log('email: ', req.body.email);
     // console.log('password: ', req.body.password);
 
-    if (req.body.firstname && req.body.lastname && req.body.imgurl && 
+    if (req.body.firstname && req.body.lastname && req.body.imgurl &&
       req.body.accounttype && req.body.currency && req.body.email &&
       req.body.password) {
 
-      bcrypt.hash(req.body.password, 10, function(err, hash) {
+      bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null, function(err, hash) {
 
         if (err) {
           // error hashing password

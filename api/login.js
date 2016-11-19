@@ -1,15 +1,15 @@
 // login.js
 
 var jwt = require('jsonwebtoken');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, models) {
 
   app.post('/login', function(req, res) {
 
     if (req.body.email != undefined && req.body.password != undefined) {
-      
-      bcrypt.hash(req.body.password, 10, function(err, hash) {
+
+      bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null, function(err, hash) {
 
         models.Profile.find({
           where: {
