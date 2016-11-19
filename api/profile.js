@@ -36,7 +36,7 @@ module.exports = function(app, models) {
     // console.log('email: ', req.body.email);
     // console.log('password: ', req.body.password);
 
-    if (req.body.firstname && req.body.lastname && req.body.imgurl &&
+    if (req.body.firstname && req.body.lastname && //req.body.imgurl && 
       req.body.accounttype && req.body.currency && req.body.email &&
       req.body.password) {
 
@@ -60,7 +60,6 @@ module.exports = function(app, models) {
             password: hash,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            imgurl: req.body.imgurl,
             accounttype: req.body.accounttype,
             magnetid: magnetid,
             currency: req.body.currency

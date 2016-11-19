@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/weirdvector/Finhacks#readme",
   "dependencies": {
-    "bcrypt": "^0.8.7",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
