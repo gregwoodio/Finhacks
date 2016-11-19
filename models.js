@@ -17,6 +17,13 @@ var Profile = sequelize.define('profile', {
     type: Sequelize.STRING, 
     primaryKey: true
   },
+  email: {
+    type: Sequelize.STRING,
+    unique: true
+  },
+  password: {
+    type: Sequelize.STRING
+  },
   firstname: {
     type: Sequelize.STRING
   },
@@ -69,7 +76,7 @@ var ProfileDevice = sequelize.define('profile_devices', {
 });
 
 Profile.hasMany(ProfileDevice, {foreignKey: 'profileid'});
-Device.hasMany(ProfileDevice, {foreignKey: 'deviceid'});
+Device.hasOne(ProfileDevice, {foreignKey: 'deviceid'});
 ProfileDevice.belongsTo(Profile, {foreignKey: 'id'});
 ProfileDevice.belongsTo(Device, {foreignKey: 'deviceid'});
 
