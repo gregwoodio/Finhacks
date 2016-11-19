@@ -7,11 +7,11 @@ var mw = require('../middleware');
 
 module.exports = function(app, models) {
 
-  app.get('/profile/:id', mw.verifyToken, function(req, res) {
+  app.get('/profile', mw.verifyToken, function(req, res) {
 
     models.Profile.find({
       where: {
-        id: req.params.id,
+        id: req.decoded.id,
       }
     })
     .then(function(profile) {
@@ -25,24 +25,6 @@ module.exports = function(app, models) {
     });
 
   });
-
-  // app.get('/profile', mw.verifyToken, function(req, res) {
-
-  //   models.Profile.findAll()
-    // .then(function(profiles) {
-
-  //     for (pro in profiles) {
-  //       delete pro.password;
-  //     }
-
-  //     res.json(profiles);
-  //   })
-  //   .catch(function(err) {
-  //     res.json({
-  //       message: err.message
-  //     });
-  //   });
-  // });
 
   app.post('/profile', function(req, res) {
 

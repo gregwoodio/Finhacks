@@ -2,6 +2,7 @@
 
 app = require('./index');
 config = require('./config');
+jwt = require('jsonwebtoken');
 
 function verifyToken(req, res, next) {
   var token = req.headers['x-access-token'];
@@ -14,6 +15,7 @@ function verifyToken(req, res, next) {
           message: "Failed to authenticate token."
         });
       } else {
+        req.decoded = decoded;
         return next();
       }
     });
