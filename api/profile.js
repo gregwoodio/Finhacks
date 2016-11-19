@@ -3,10 +3,11 @@
 var uuid = require('uuid');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+var mw = require('../middleware');
 
 module.exports = function(app, models) {
 
-  app.get('/profile/:id', function(req, res) {
+  app.get('/profile/:id', mw.verifyToken, function(req, res) {
 
     models.Profile.find({
       where: {
@@ -14,6 +15,7 @@ module.exports = function(app, models) {
       }
     })
     .then(function(profile) {
+      delete profile.password;
       res.json(profile);
     })
     .catch(function(err) {
@@ -24,28 +26,33 @@ module.exports = function(app, models) {
 
   });
 
-  app.get('/profile', function(req, res) {
+  // app.get('/profile', mw.verifyToken, function(req, res) {
 
-    models.Profile.findAll()
-    .then(function(profiles) {
-      res.json(profiles);
-    })
-    .catch(function(err) {
-      res.json({
-        message: err.message
-      });
-    });
-  });
+  //   models.Profile.findAll()
+    // .then(function(profiles) {
+
+  //     for (pro in profiles) {
+  //       delete pro.password;
+  //     }
+
+  //     res.json(profiles);
+  //   })
+  //   .catch(function(err) {
+  //     res.json({
+  //       message: err.message
+  //     });
+  //   });
+  // });
 
   app.post('/profile', function(req, res) {
 
-    console.log('firstname: ', req.body.firstname);
-    console.log('lastname: ', req.body.lastname);
-    console.log('imgurl: ', req.body.imgurl);
-    console.log('accounttype: ', req.body.accounttype);
-    console.log('currency: ', req.body.currency);
-    console.log('email: ', req.body.email);
-    console.log('password: ', req.body.password);
+    // console.log('firstname: ', req.body.firstname);
+    // console.log('lastname: ', req.body.lastname);
+    // console.log('imgurl: ', req.body.imgurl);
+    // console.log('accounttype: ', req.body.accounttype);
+    // console.log('currency: ', req.body.currency);
+    // console.log('email: ', req.body.email);
+    // console.log('password: ', req.body.password);
 
     if (req.body.firstname && req.body.lastname && req.body.imgurl && 
       req.body.accounttype && req.body.currency && req.body.email &&
