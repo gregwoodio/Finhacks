@@ -39,7 +39,7 @@ module.exports = function(app, models) {
           });
 
           res.json({
-            message: 'Successful login',
+            success: true,
             token: token
           });
 
