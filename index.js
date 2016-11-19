@@ -3,6 +3,7 @@ var app        = express();
 var mongoose   = require("mongoose");
 var bodyParser = require('body-parser');
 var PORT       = process.env.port || 3000;
+var config     = require('./config');
 
 //setup body parser for when post requests are sent
 app.use(bodyParser.json()); // for parsing application/json
@@ -20,6 +21,9 @@ var models = require('./models.js');
 require('./api/profile.js')(app, models);
 require('./api/device.js')(app, models);
 require('./api/uploads.js')(app, models);
+
+//secret for signing tokens
+app.set('secret', config.secret);
 
 // Configuration
 app.use(express.static(__dirname + '/uploads'));
