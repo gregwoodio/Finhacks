@@ -98,7 +98,7 @@ module.exports = function(app, models) {
 
       console.log(device);
 
-      if(device.profile_devices.profile.id != req.decoded.id)
+      if(device.dataValues.profile_devices.profile.id != req.decoded.id)
         return res.send({success: false, message: "You cannot update this device"});
 
 
