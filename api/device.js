@@ -10,7 +10,13 @@ module.exports = function(app, models) {
     models.Device.find({
       where: {
         deviceid: req.params.id,
-      }
+      },
+      include: [{
+        model: models.ProfileDevice,
+        include: [{
+          model: models.Profile
+        }]
+      }]
     })
     .then(function(device) {
       res.json(device);
