@@ -5,6 +5,21 @@ var request = require('request');
 module.exports = function(app, models) {
   app.post('/message', function(req, res) {
 
+    models.Profile.find({
+      where: {
+        magnetid: req.body.magnetid
+      },
+      include: [{
+        model: models.ProfileDevice,
+        include: [{
+          model: models.Profile
+        }]
+      }]
+    })
+    .then(function(device) {
+      
+    })
+
     console.log(req.body.deviceId);
     console.log(req.body.message);
 

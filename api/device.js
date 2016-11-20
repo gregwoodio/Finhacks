@@ -75,7 +75,7 @@ module.exports = function(app, models) {
     }
   });
 
-  app.post("/device/updatefdi/:id", mw.verifyToken, function (req, res) {
+  app.post("/device/updatefdi/:id/:fdi", mw.verifyToken, function (req, res) {
     //upon logging in
     //on Android side, get the firebase devce id and send it to this route
     //also pass in the phone's uuid and check if the fdi column has to be updated based on the device id
@@ -96,16 +96,16 @@ module.exports = function(app, models) {
       }]
     }).then(function (device) {
 
-      if(device.profile_device.profile.id != req.decoded.id)
+      if(device.profile_devices.profile.id != req.decoded.id)
         return res.send({success: false, message: "You cannot update this device"});
 
 
       console.log("old fdi is: " + device.fdi);
-      console.log("new fdi is: " + req.body.fdi);
+      console.log("new fdi is: " + req.params.fdi);
       //if the fdi was changed and they don't match up in database
-      if(device.fdi != req.body.fdi) {
+      if(device.fdi != req.params.fdi) {
         //update the database with the new fdi.
-        device.update({fdi: req.body.fdi}).then(function () {});
+        device.update({fdi: req.params.fdi}).then(function () {});
         res.send({success: true, message: "FDI updated"});
       }
 
