@@ -58,37 +58,41 @@ module.exports = function(app, models) {
                 //store record in database with errorcode 404
 
 
+                //Find the Receivers profile
+                models.Profile.find({
+                    where: {
+                        "magnetid": magnetid
+                    }
+                }).then(function(receiverProfile) {
                 //create failed Transaction for sender
                 var newTransactionSender = new Transaction({
                     "sender_id": sender,
                     "receiver": {
-                        "magnetid": magnetid
+                      profileid: receiverProfile.id,
+                      magnetid: receiverProfile.magnetid,
+                      firstname: receiverProfile.firstname,
+                      lastname: receiverProfile.lastname
                     },
                     "transaction_amt": (amount * -1),
                     "payment_type": payment_type,
-                    "timestamp": new Date(timestamp),
+                    "timestamp": new Date(),
                     "error_code": 404
                 });
 
                 //insert record and send back error message
                 newTransactionSender.save(function(err) {
+                    if (err) return res.send({success: false, message: err.message});
 
-
-                    console.log(err);
-                    console.log("WHAT IS GOING ON RIGHT ABOVE THE CODE THAT BREAKS");
-                    if (err) return res.send(err)
-
-
+                    //return insufficient funds message
                     return res.send({success: false, message: "Insufficient funds"});
-
-                    console.log("I came after insufficnet funds");
 
                 }).catch(function(err) {
                     return res.send({
                         success: false,
-                        message: err
+                        message: err.message
                     });
                 });
+              });
             } else {
                 //user has sufficient funds now update the users currency
                 senderProfile.update({
@@ -143,7 +147,7 @@ module.exports = function(app, models) {
 
                     newTransactionSender.save(function(err) {
                         //if any error occurs throw its
-                        if (err) return res.send(err);
+                        if (err) return res.send({success: false, message: err.message});
 
                         var newTransactionReceiver = new Transaction({
                             sender_id: sender,
@@ -161,7 +165,7 @@ module.exports = function(app, models) {
 
                         newTransactionReceiver.save(function(err) {
                             //if any error occurs throw its
-                            if (err) return res.send(err);
+                            if (err) return res.send({success: false, message: err.message});
 
 
 

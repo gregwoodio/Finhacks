@@ -38,45 +38,74 @@ module.exports = function(app, models) {
 
   app.post('/device', mw.verifyToken, function(req, res) {
 
-    if (req.body.devicetype != undefined && req.body.devicename != undefined) {
+
+    //CHECK if all fields are sent through
+    if (req.body.devicetype && req.body.deviceid) {
+
 
       models.Device.build({
-        deviceid: undefined,
+        deviceid: req.body.deviceid,
         devicetype: req.body.devicetype,
-        devicename: req.body.devicename
       })
       .save()
       .then(function(device) {
-
+        //attach new device to profile
         models.ProfileDevice.build({
-          profileid: 
-        }
-
-        res.json({
-          message: 'Device saved.'
+          profileid: req.decoded.id,
+          deviceid: device.deviceid
+        })
+        .save()
+        .then(function (obj) {
+          res.send({success: true, message: "Device saved"});
         });
       })
       .catch(function(err) {
-        res.json({
-          message: err.message
-        });
+        res.json({success: false, message: err.message});
       });
     } else {
 
-      res.json({
-        message: 'Missing parameters for device creation.'
-      });
+      res.json({success: false,message: 'Missing parameters for device creation.'});
     }
   });
 
-  app.post("/device/updatefdi", mw.verifyToken, function (req, res) {
-    models.Device.update({
-      fdi: req.body.fdi
-    }, {
+  app.post("/device/updatefdi/:id", mw.verifyToken, function (req, res) {
+    //upon logging in
+    //on Android side, get the firebase devce id and send it to this route
+    //also pass in the phone's uuid and check if the fdi column has to be updated based on the device id
+
+    var id = req.params.id;
+
+    models.Device.find({
       where: {
-        deviceid: req.body.deviceId
+        deviceid: id,
+      },
+      include: [{
+        model: models.ProfileDevice,
+        include: [{
+          model: models.Profile
+        }]
+      }]
+    }).then(function (device) {
+
+      if(device.profile_device.profile.id != req.decoded.id)
+        return res.send({success: false, message: "You cannot update this device"});
+
+
+      console.log("old fdi is: " + device.fdi);
+      console.log("new fdi is: " + req.body.fdi);
+      //if the fdi was changed and they don't match up in database
+      if(device.fdi != req.body.fdi) {
+        //update the database with the new fdi.
+        device.update({fdi: req.body.fdi}).then(function () {});
+        res.send({success: true, message: "FDI updated"});
       }
-    }).then(function (device) {});
+
+      //otherwise do nothing
+      return res.end("nothing happaned");
+    })
+    .catch(function (err) {
+      res.json({success: false,message: err.message});
+    });
   });
 
 }

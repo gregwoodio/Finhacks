@@ -36,7 +36,7 @@ module.exports = function(app, models) {
     // console.log('email: ', req.body.email);
     // console.log('password: ', req.body.password);
 
-    if (req.body.firstname && req.body.lastname && //req.body.imgurl && 
+    if (req.body.firstname && req.body.lastname && //req.body.imgurl &&
       req.body.accounttype && req.body.currency && req.body.email &&
       req.body.password) {
 
@@ -87,5 +87,40 @@ module.exports = function(app, models) {
       });
     }
   });
+
+
+  app.put("/profile", mw.verifyToken, function (req, res) {
+
+    var profile = req.decoded;
+
+    models.Profile.find({id: req.decoded.id})
+    .then(function (profile) {
+
+      //if firstname or last name is passed through as an update field then update magnet id with new credentials
+      var magnetid = req.body.firstname || profile.firstname;
+      magnetid += " ";
+      magnetid += req.body.lastname || profile.lastname;
+      magnetid += "-";
+      magnetid += profile.id.split("-")[0];
+
+      profile.update({
+        imgurl: req.body.imgurl || profile.imgurl,
+        firstname: req.body.firstname || profile.firstname,
+        lastname: req.body.lastname || profile.lastname,
+        magnetid: magnetid
+      }).then(function (updatedProfile) {
+        //sign new token
+
+        res.send(updatedProfile);
+      });
+
+    });
+
+
+
+
+
+  });
+
 
 }
