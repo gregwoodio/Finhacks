@@ -32,7 +32,7 @@ var Profile = sequelize.define('profile', {
   },
   imgurl: {
     type: Sequelize.STRING,
-    defaultValue: 'http://159.203.8.134:3000/upload/default.png'
+    defaultValue: 'http://159.203.8.134:3000/default.png'
   },
   accounttype: {
     type: Sequelize.STRING
