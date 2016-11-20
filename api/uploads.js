@@ -19,12 +19,12 @@ module.exports = function(app, models) {
 
       if(file) {
 
-        var imageBuffer = decodeBase64Image(file);
-
         //generate new file name using the magnetid of a users profile
         var newFileName = req.body.magnetid + ".jpg";
+        var newPath = path.join(PROFILE_UPLOADS_PATH, newFileName);
+        var bitmap = new Buffer(file, 'base64');
 
-        fs.writeFile(newFileName, imageBuffer.data, function (err) {
+        fs.writeFile(newPath, bitmap, function (err) {
           if(err)
             return res.status(500).send("error " + err.message);
 
@@ -34,18 +34,4 @@ module.exports = function(app, models) {
         res.send("no image sent");
       }
     });
-
-    function decodeBase64Image(dataString) {
-      var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
-          response = {};
-
-      if (matches.length !== 3) {
-          return new Error('Invalid input string');
-      }
-
-      response.type = matches[1];
-      response.data = new Buffer(matches[2], 'base64');
-
-      return response;
-  }
 };
