@@ -14,7 +14,8 @@ module.exports = function(app, models) {
       include: [{
         model: models.ProfileDevice,
         include: [{
-          model: models.Profile
+          model: models.Profile,
+          attributes: ['magnetid','imgurl']
         }]
       }]
     })
@@ -88,7 +89,9 @@ module.exports = function(app, models) {
       include: [{
         model: models.ProfileDevice,
         include: [{
-          model: models.Profile
+          model: models.Profile,
+          attributes: ['magnetid','imgurl']
+
         }]
       }]
     }).then(function (device) {

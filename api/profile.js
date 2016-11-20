@@ -9,7 +9,8 @@ module.exports = function(app, models) {
 
   app.get('/profile', mw.verifyToken, function(req, res) {
 
-    models.Profile.find({
+    models.Profile.findAll({
+      attributes: ['magnetid','imgurl'],
       where: {
         id: req.decoded.id,
       }
