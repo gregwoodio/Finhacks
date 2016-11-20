@@ -7,7 +7,7 @@ module.exports = function(app, models) {
 
   app.post('/login', function(req, res) {
 
-    if (req.body.email != undefined && req.body.password != undefined) {
+    if (req.body.email && req.body.password) {
 
       bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null, function(err, hash) {
 

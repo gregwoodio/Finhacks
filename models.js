@@ -50,13 +50,13 @@ var Profile = sequelize.define('profile', {
 
 var Device = sequelize.define('devices', {
   deviceid: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     primaryKey: true
   },
   devicetype: {
     type: Sequelize.STRING
   },
-  devicename: {
+  fdi: {
     type: Sequelize.STRING
   }
 }, {
@@ -78,7 +78,7 @@ var ProfileDevice = sequelize.define('profile_devices', {
 
 Profile.hasMany(ProfileDevice, {foreignKey: 'profileid'});
 Device.hasOne(ProfileDevice, {foreignKey: 'deviceid'});
-ProfileDevice.belongsTo(Profile, {foreignKey: 'id'});
+ProfileDevice.belongsTo(Profile, {foreignKey: 'profileid'});
 ProfileDevice.belongsTo(Device, {foreignKey: 'deviceid'});
 
 module.exports = {
