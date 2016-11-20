@@ -1,10 +1,10 @@
 // altpay.js
 
 app = function() {
-  var altpay = angular.module('altpay', ['ngRoute', 'ngAnimate', 'ui.bootstrap']);
+  var altpay = angular.module('altpay', ['ngRoute', 'ngAnimate', 'ui.bootstrap','ngStorage']);
 
-  altpay.service('LoginService', ['$rootScope', '$sessionStorage', function($rootScope, $sessionStorage) {
-    
+  altpay.factory('LoginService', ['$rootScope', '$sessionStorage','$http', function($rootScope, $sessionStorage, $http) {
+
     this.setProfile = function(profile) {
       $rootScope.profile = profile;
       $sessionStorage.profile = profile;
@@ -17,6 +17,7 @@ app = function() {
     this.setToken = function(token) {
       $rootScope.token = token;
       $sessionStorage.token = token;
+      $http.defaults.headers.common = { 'x-access-token' : token };
     };
 
     this.getToken = function() {
@@ -35,21 +36,23 @@ app = function() {
       return undefined;
     };
 
+    return this;
+
   }]);
 
   altpay.controller('LoginController', ['$location', '$scope','$http', 'LoginService',
-    function($location, $scope, $http, $LoginService) {
+    function($location, $scope, $http, LoginService) {
 
     $scope.login = function() {
-
+      console.log("hello i got here");
       $http.post('/login', {
-        params: {
-          email: $scope.email,
-          password: $scope.password
-        }
+        email: $scope.email,
+        password: $scope.password
       })
       .success(function(data, status, headers, config) {
         if (data.success) {
+          console.log("hello i got here in the success");
+
           LoginService.setToken(data.token);
           $location.url('/transactions');
 
@@ -66,13 +69,26 @@ app = function() {
         } else {
           $scope.message = "Login failed.";
         }
+      })
+      .error(function (err) {
+        console.error(err);
       });
     }
 
   }]);
 
-  altpay.controller('TransactionController', ['$location', '$scope', '$http', 'LoginService',
-    function($location, $scope, $http, LoginService) {
+  altpay.controller('TransactionController', ['$location', '$scope', '$http', 'LoginService', function($location, $scope, $http, LoginService) {
+
+    $scope.transactions = [];
+
+    $scope.update = function() {
+      // get transactions here
+      $http.get("/transactions").success(function (data) {
+        console.log(data);
+        var i = 0;
+          $scope.transactions = data;
+      })
+    };
 
     if (!LoginService.isLoggedIn()) {
       $location.url('/login');
@@ -80,10 +96,7 @@ app = function() {
       $scope.update();
     }
 
-    $scope.update = function() {
-      // get transactions here
-      //$http.get()
-    };
+
 
   }]);
 

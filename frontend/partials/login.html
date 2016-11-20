@@ -1,13 +1,21 @@
 <div class='container'>
   <div class='row'>
-    <div class='col-md-offset-4 col-md-4'>
+    <div class='col-xs-12 col-md-8 col-md-offset-2'>
       <h1>Login</h1>
 
-      <input type='text' class='form-control' ng-model='email' />
 
-      <input type='password' class='form-control' ng-model='password' />
+      <form class="">
+          <div class="form-group">
+              <label for="email">Email address:</label>
+              <input type="email" class="form-control" id="email" ng-model='email'>
+          </div>
+          <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input type="password" class="form-control" id="password" ng-model='password'>
+          </div>
+          <button type="submit" class="btn btn-lg btn-primary" ng-click="login();">Login</button>
+      </form>
 
-      <input type='submit' value="Login" class='btn btn-lg btn-primary' />
     </div>
   </div>
 </div>

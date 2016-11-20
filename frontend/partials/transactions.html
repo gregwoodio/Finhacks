@@ -1,0 +1,25 @@
+<div>
+
+    <div >
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Amount Sent</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in transactions">
+                    <td>{{t.timestamp | date:'MMM dd, yy H:mm a'}}</td>
+                    <td>{{t.sender_id}}</td>
+                    <td>{{t.receiver.firstname + ' ' + t.receiver.lastname}}</td>
+                    <td>{{t.transaction_amt}}</td>
+                    <td>{{t.error_code}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
