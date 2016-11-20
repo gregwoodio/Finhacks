@@ -6,10 +6,11 @@ var PORT       = process.env.port || 3000;
 var config     = require('./config');
 
 //setup body parser for when post requests are sent
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.json({limit: '50mb'})); // for parsing application/json
 app.use(bodyParser.urlencoded({
   extended: true,
-	limit: '10mb',
+	limit: '50mb',
+  parameterLimit: 50000
 })); // for parsing application/x-www-form-urlencoded
 
 //connect to mongodb database
@@ -26,14 +27,14 @@ require('./api/transactions.js')(app, models);
 require('./api/message')(app, models);
 
 //if it's not an API route, go to the front end login
-app.use(express.static(__dirname + '/frontend'));
+/*app.use(express.static(__dirname + '/frontend'));
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/frontend/altpay.html');
 });
 
 app.get('/*', function(req, res) {
   res.sendFile(__dirname + '/frontend/altpay.html');
-});
+});*/
 //secret for signing tokens
 app.set('secret', config.secret);
 
